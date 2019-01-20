@@ -11,6 +11,11 @@ import logging
 import sys 
 from datetime import datetime, timedelta
 import pytz
+import durus
+from durus.file_storage import FileStorage
+from durus.connection import Connection
+from durus.persistent import Persistent
+from mschf.gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
 
 if __name__ == '__main__':
     from gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
@@ -18,10 +23,12 @@ if __name__ == '__main__':
     from durus.connection import Connection
     from durus.persistent import Persistent
 else:
-    from mschf.durus.file_storage import FileStorage
-    from mschf.durus.connection import Connection
-    from mschf.durus.persistent import Persistent
-    from mschf.gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
+    #from durus.file_storage import FileStorage
+    #from mschf.durus.connection import Connection
+    #from mschf.durus.persistent import Persistent
+    #from mschf.gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
+    pass
+
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric import utils
 import os.path
