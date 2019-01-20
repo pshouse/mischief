@@ -16,19 +16,6 @@ from durus.file_storage import FileStorage
 from durus.connection import Connection
 from durus.persistent import Persistent
 from mschf.gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
-
-if __name__ == '__main__':
-    from gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
-    from durus.file_storage import FileStorage
-    from durus.connection import Connection
-    from durus.persistent import Persistent
-else:
-    #from durus.file_storage import FileStorage
-    #from mschf.durus.connection import Connection
-    #from mschf.durus.persistent import Persistent
-    #from mschf.gen_cert import generate_selfsigned_cert, x509, NameOID, default_backend, serialization, hashes
-    pass
-
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric import utils
 import os.path
@@ -76,7 +63,54 @@ def start_server():
     endpoint = TCP4ServerEndpoint(reactor, 5999)
     endpoint.listen(MFactory())
 
-class Mschf(toga.App):
+class Mschf(toga.DocumentApp):
+     # Button callback functions
+    def do_stuff(self, widget, **kwargs):
+        self.label.text = "Do stuff."
+
+    def do_clear(self, widget, **kwargs):
+        self.label.text = "Ready."
+
+    def action_info_dialog(self, widget):
+        self.main_window.info_dialog('Toga', 'THIS! IS! TOGA!!')
+
+    def action_question_dialog(self, widget):
+        if self.main_window.question_dialog('Toga', 'Is this cool or what?'):
+            self.main_window.info_dialog('Happiness', 'I know, right! :-)')
+        else:
+            self.main_window.info_dialog('Shucks...', "Well aren't you a spoilsport... :-(")
+
+    def action_open_file_dialog(self, widget):
+        try:
+            fname = self.main_window.open_file_dialog(
+                title="Open file with Toga",
+            )
+            self.label.text = "File to open:" + fname
+        except ValueError:
+            self.label.text = "Open file dialog was canceled"
+
+    def action_select_folder_dialog(self, widget):
+        try:
+            path_name = self.main_window.select_folder_dialog(
+                title="Select folder with Toga",
+            )
+            self.label.text = "Folder selected:" + path_name
+        except ValueError:
+            self.label.text = "Folder select dialog was canceled"
+
+    def action_save_file_dialog(self, widget):
+        fname = 'Toga_file.txt'
+        try:
+            save_path = self.main_window.save_file_dialog(
+                "Save file with Toga",
+                suggested_filename=fname)
+            if save_path is not None:
+                self.label.text = "File saved with Toga:" + save_path
+            else:
+                self.label.text = "Save file dialog was canceled"
+        except ValueError:
+            self.label.text = "Save file dialog was canceled"
+    
     def startup(self):
         log.info("We're running on {}".format(host_name))
         log.info("Loading settings from {}".format(SETTINGS_FILE))
@@ -171,10 +205,55 @@ class Mschf(toga.App):
         self.main_window = toga.MainWindow(title=self.name)
 
         # Create a main content box
-        main_box = toga.Box()
+        #main_box = toga.Box()
 
         # Add the content on the main window
-        self.main_window.content = main_box
+        #self.main_window.content = main_box
+
+        # Label to show responses.
+        self.label = toga.Label('Ready.', style=Pack(padding_top=20))
+
+        # Buttons
+        btn_style = Pack(flex=1)
+        btn_info = toga.Button('Info', on_press=self.action_info_dialog, style=btn_style)
+        btn_question = toga.Button('Question', on_press=self.action_question_dialog, style=btn_style)
+        btn_open = toga.Button('Open File', on_press=self.action_open_file_dialog, style=btn_style)
+        btn_save = toga.Button('Save File', on_press=self.action_save_file_dialog, style=btn_style)
+        btn_select = toga.Button('Select Folder', on_press=self.action_select_folder_dialog, style=btn_style)
+        dialog_btn_box = toga.Box(
+            children=[
+                btn_info,
+                btn_question,
+                btn_open,
+                btn_save,
+                btn_select
+            ],
+            style=Pack(direction=ROW)
+        )
+        # Dialog Buttons
+        btn_style = Pack(flex=1)
+        btn_do_stuff = toga.Button('Do stuff', on_press=self.do_stuff, style=btn_style)
+        btn_clear = toga.Button('Clear', on_press=self.do_clear, style=btn_style)
+        btn_box = toga.Box(
+            children=[
+                btn_do_stuff,
+                btn_clear
+            ],
+            style=Pack(direction=ROW)
+        )
+
+        # Outermost box
+        outer_box = toga.Box(
+            children=[btn_box, dialog_btn_box, self.label],
+            style=Pack(
+                flex=1,
+                direction=COLUMN,
+                padding=10
+            )
+        )
+
+        # Add the content on the main window
+        self.main_window.content = outer_box
 
         # Show the main window
         self.main_window.show()
@@ -223,7 +302,7 @@ class MFactory(Factory):
         return MProtocol(self)
     
 def main():
-    return Mschf('mschf', 'com.mschf.mschf')
+    return Mschf('mschf', 'com.mschf.mschf', document_types=['*.msf'])
 
 if __name__ == '__main__':
     main().main_loop()

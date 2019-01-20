@@ -1,6 +1,6 @@
-git+https://github.com/pshouse/durus.git
 dill
 cryptography==2.4.2
 twisted
 pytz
 toml
+git+https://github.com/pshouse/durus.git
