@@ -1,6 +1,6 @@
 Durus==3.9
 dill
 cryptography==2.4.2
-pyyaml
 twisted
 pytz
+toml

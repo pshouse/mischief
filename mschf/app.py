@@ -25,7 +25,7 @@ else:
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric import utils
 import os.path
-import yaml
+import toml
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 DEFAULT_TZ_NAME = 'America/New_York'
@@ -35,7 +35,7 @@ FILE_EXT = ".msf"
 
 DEFAULT_DB_FILE = "lil" + FILE_EXT
 
-SETTINGS_FILE = 'settings.yaml'
+SETTINGS_FILE = 'settings.toml'
 
 settings = {
     'tz_name': DEFAULT_TZ_NAME,
@@ -60,9 +60,9 @@ generate_node_id = lambda: str(uuid4())
 def load_settings(settings):
     if not os.path.isfile(SETTINGS_FILE):
         with open(SETTINGS_FILE, 'w') as f:
-            yaml.dump(settings, f)
+            toml.dump(settings, f)
     else:
-        settings = yaml.safe_load(SETTINGS_FILE)
+        settings = toml.loads(SETTINGS_FILE)
     
 def start_server():
     log.info('Startng server . . . ')
