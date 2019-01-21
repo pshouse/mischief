@@ -22,6 +22,8 @@ import os.path
 import toml
 from datetime import datetime, timedelta
 from dataclasses import dataclass
+from mschf.msf import MSF
+
 DEFAULT_TZ_NAME = 'America/New_York'
 
 # msf = Mschf Storage Facility
@@ -79,6 +81,8 @@ class Mschf(toga.DocumentApp):
             self.main_window.info_dialog('Happiness', 'I know, right! :-)')
         else:
             self.main_window.info_dialog('Shucks...', "Well aren't you a spoilsport... :-(")
+    def open_file(self, widget):
+        self.action_open_file_dialog(widget)
 
     def action_open_file_dialog(self, widget):
         try:
@@ -302,7 +306,7 @@ class MFactory(Factory):
         return MProtocol(self)
     
 def main():
-    return Mschf('mschf', 'com.mschf.mschf', document_types=['*.msf'])
+    return Mschf('mschf', 'com.mschf.mschf', document_types={'msf': MSF})
 
 if __name__ == '__main__':
     main().main_loop()
