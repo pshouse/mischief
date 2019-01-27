@@ -4,3 +4,4 @@ twisted
 pytz
 toml
 git+https://github.com/pshouse/durus.git
+git+https://github.com/pshouse/toga.git
