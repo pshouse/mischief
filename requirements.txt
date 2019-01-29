@@ -4,4 +4,6 @@ twisted
 pytz
 toml
 git+https://github.com/pshouse/durus.git
-git+https://github.com/pshouse/toga.git@v0.3.0.dev11
+#git+https://github.com/pshouse/toga.git
+git+https://github.com/pshouse/toga.git#egg=toga-core&subdirectory=src/core
+git+https://github.com/pshouse/toga.git#egg=toga-cocoa&subdirectory=src/cocoa

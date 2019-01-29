@@ -136,7 +136,8 @@ class Mschf(toga.DocumentApp):
 
         #@dataclass
         class M(Persistent, object):
-            created_at: datetime = None
+            #created_at: datetime = None
+            created_at = None
 #
         #class Meta(M):
         #    pass

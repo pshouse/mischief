@@ -48,7 +48,7 @@ setup(
         # Desktop/laptop deployments
         'macos': {
             'app_requires': [
-                'toga-cocoa==0.3.0.dev11',
+                'toga-cocoa==0.3.0.dev12',
             ]
         },
         'linux': {
