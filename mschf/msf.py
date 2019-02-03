@@ -1,6 +1,7 @@
 import toga
 import os
 from durus.connection import Connection
+from durus.file_storage import FileStorage
 from urllib.parse import quote
 from toga.style import Pack
 
@@ -28,9 +29,12 @@ class MsfWindow(toga.Window):
         )
         self.content = self.html_view
     
+    def on_close(self):
+        self.msf.close()
+
     def redraw(self):
         pass
-        #self.html_view.set_content(self.msf.fileURL, 'test content')
+        #self.html_view.set_content(self.msf.fileURL, b'test content')
         
 class MSF(toga.Document):
     db = None
@@ -42,7 +46,7 @@ class MSF(toga.Document):
 
     def read(self):
         if os.path.isfile(self.filename):
-            self.db = Connection(self.filename)
+            self.db = Connection(FileStorage(self.filename))
     
     def show(self):
         self.window.redraw()
@@ -50,3 +54,6 @@ class MSF(toga.Document):
 
     def fileURL(self):
         return 'file://{}'.format(quote(self.filename))
+    
+    def close(self):
+        print('closing')

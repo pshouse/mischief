@@ -218,6 +218,17 @@ class Mschf(toga.DocumentApp):
         # Label to show responses.
         self.label = toga.Label('Ready.', style=Pack(padding_top=20))
 
+        self.workspace = toga.DetailedList(
+            data=[
+                {
+                    'icon': toga.Icon.TIBERIUS_ICON,
+                    'title': "Misbehavin'",
+                    'subtitle':'0'
+                }
+            ],
+            style=Pack(flex=1)
+        )
+
         # Buttons
         btn_style = Pack(flex=1)
         btn_info = toga.Button('Info', on_press=self.action_info_dialog, style=btn_style)
@@ -236,7 +247,6 @@ class Mschf(toga.DocumentApp):
             style=Pack(direction=ROW)
         )
         # Dialog Buttons
-        btn_style = Pack(flex=1)
         btn_do_stuff = toga.Button('Do stuff', on_press=self.do_stuff, style=btn_style)
         btn_clear = toga.Button('Clear', on_press=self.do_clear, style=btn_style)
         btn_box = toga.Box(
@@ -249,11 +259,12 @@ class Mschf(toga.DocumentApp):
 
         # Outermost box
         outer_box = toga.Box(
-            children=[btn_box, dialog_btn_box, self.label],
+            #children=[btn_box, dialog_btn_box, self.label],
+            children=[self.workspace, self.label],
             style=Pack(
-                flex=1,
-                direction=COLUMN,
-                padding=10
+                #flex=1,
+                direction=COLUMN
+                #padding=10
             )
         )
 
